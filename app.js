@@ -7,7 +7,7 @@ import orderRoutes from './routes/order.routes.js';
 import productRoutes from './routes/product.routes.js';
 import toppingRoutes from './routes/topping.routes.js';
 import mapRoutes from './routes/map.routes.js';
-import ahamoveRoutes from './routes/ahamove.routes.js';
+import ghnRoutes from './routes/ghn.routes.js';
 
 const app = express();
 
@@ -21,6 +21,6 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/toppings', toppingRoutes);
 app.use('/api/map', mapRoutes);
-app.use('/api/ahamove', ahamoveRoutes);
+app.use('/api/ghn', ghnRoutes);
 
 export default app;
