@@ -22,6 +22,13 @@ export const calculateFee = async (req, res) => {
       data: result.data
     });
   } catch (error) {
+     console.error("===== GHN ERROR =====");
+  console.error("STATUS:", error?.response?.status);
+  console.error("DATA:", error?.response?.data);
+  console.error("URL:", error?.config?.url);
+  console.error("BASE URL:", error?.config?.baseURL);
+  console.error("MESSAGE:", error.message);
+
     console.error("[ghn.controller] calculateFee:", error?.response?.data || error.message);
     return res.status(500).json({
       success: false,
