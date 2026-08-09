@@ -1,4 +1,4 @@
-DATABASE_URL="postgresql://postgres:conca@127.0.0.1:5432/conngua?schema=public"
+DATABASE_URL="postgresql://postgres:Conca@localhost:5432/Test?schema=public"
 PORT=3000
 JWT_SECRET=dqwdqqdsads
 JWT_EXPIRES_IN=7d
@@ -11,18 +11,15 @@ FIREBASE_CLIENT_EMAIL="firebase-adminsdk-fbsvc@milktea-13118.iam.gserviceaccount
 # Lưu ý: Copy toàn bộ private key, giữ nguyên các ký tự \n bên trong chuỗi
 FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nMIIEugIBADANBgkqhkiG9w0BAQEFAASCBKQwggSgAgEAAoIBAQD39TBWNlDzNZlO\npHkgsX+rCYw3CBECxWlhQmYoOlrIXvz6+jlrk3LGFw0PFx5SSGzJ/TP2jN17BCTJ\nn63OvT7dcnH5cxaxz2LdFZihHJysEhmhICVV0zNzh5T9F1arU33gUTQmTkmx/Sdn\nNpwh4k2B6voZ6csx6mUEyRvMNpnaNtAn7JmKxSSj7R0RoARTrIuKcfAbzylSwuFg\n1bLke8K7DoNLW6BegOBhxqJSr/jtoBuVwMoVht5jwCj+Q7BBIWw1IbxsrTqVD6P+\nF3wnyxp0Zp1qg+4u6hA1Ej75SZoroH6rgiy2U1r+WihbF6grcaRB3JGbb1abYASr\nWdR6MxWFAgMBAAECgf8OXfvvAuFYi5fWdrE4s7rcrjDxqgX8+HNNWguRSSWkITIy\nA02lw2VjFPLXbP9/b7LeAU3W0KgEo2N+S0JG4wWWzzV2FApnQxz3XR5QN4LcdYVb\n+1YueDkC+K1+p1uI5yLkByXTvQrdb/hYgqbepRODSO+KO4G1OApNEgS0+x+Zr8uC\nwvsIecJ0+Jy+QDYKGUdGkokixr/l7zopRy3TbhnUal9P7niSmvuhWGRUJvCWMESg\nxUbCg3zQjcY4IWzDpz+Wdio2SnZ4wW12SzUnJLf6ojzc8JRbY5yetCYzMP+LCzto\nCpOlXUN3AYQVGxIvFQXB3Dq+3lvMofHeF1xqv0ECgYEA/B4XAs0aWaa8XamkYwre\n+fl2huxMjyK/yDQksZqJ/DQHODUULrno7myELWtxi3g1piaxm58V+uypJGFO3yUS\nXaQTB5K/lHBPA4m7NsewMd+SotUaycFIuWmju5stlQSMnjz2gqBUAhKlNjP6DEkH\neCwGyfYJSD8hj/s6zJ208yUCgYEA+8azOHxD8YvnpLJBdAFMZbYSzSRfL5/kK6hJ\nVcl/+5JANeXjonghDYgLbCXD3GTRo77uUHRP2uxPAsbeMdiNZnOLyN2RdndGrfTa\nx7vYF13Y3eAClT1F1TNKOj5X4Xbj+y1sUI/S4w9TerH1kSHtzQ86rs7aMNr1NWeW\nxY/XOuECgYAjo109WCDRa3BVDRXfqjm6vDi0+dIYqaDSfAxzzpSSwggDOf2QXVc/\n3LcSdI2oWWW8Btw0U1iYD7wZGGg9ws/FzNujxmquYPHKXj3IkJGneyMPQXB39IqD\nKxup+VWIKwx1kciGzoMRh/EyqEZAVlJn+lE7WzwUqlfkMm8tXV2mwQKBgHzqCVMV\n/BOkKOpCckzetAumeM+EoyEav/aVCMViMngbCHZ1NyoNVcDD5X7jgbgf4Q7PlKcf\n/dqM8WpcRjMO0KCq5QhkPV48MTnvSHheDwkQy57RHBb1DmeHieU5txoqhVPCJoIV\nyThUC0PNdRtrbPMXAjNmd0RT7eJwIZKlGdChAoGAQ807ilTdTQ+2//Y7pTHFeF//\nfC8yhQbY2yx8iQ/68Mt9pERYvhCyL623xtl3mHmhEXYWezBXa4K+wq/dVy7XN7r4\noSYwEwrFhixgfCO9j5QixXoXerOg3P53A/cnArdVjNNawrPe6hY+D9Kf/2sUPoA5\nm24GmXabtDBApl7vbjg=\n-----END PRIVATE KEY-----\n"
 
-# Cấu hình Ahamove API (Dùng link Staging để test, khi lên Production đổi thành api.ahamove.com)
-AHAMOVE_BASE_URL=https://partner-apistg.ahamove.com/v3
-AHAMOVE_API_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXAiOiJ1c2VyIiwiY2lkIjoiODQ4MjI0MDE0MDYiLCJzdGF0dXMiOiJBQ1RJVkFUSU5HIiwiZW9jIjoidGlnZXJiaWEwNEBnbWFpbC5jb20iLCJub2MiOiJUcuG6p24gxJDhurduZyBBbiBLaGFuZyIsImltZWkiOiJ3ZWIiLCJ0eXBlIjoid2ViIiwiZXhwIjoxNzg2NTA4ODMxLCJpYXQiOjE3ODYyNDk2MzEsImlzcyI6ImFoYSIsInN1YiI6Ijg0ODIyNDAxNDA2In0.7VHgcjMZY2eYU5tRKbh675XFUjFSvNJ3jgNJE9hqB9c
 
-# Thông tin điểm đi (Cửa hàng)
-SHOP_NAME=Cửa hàng Trà Sữa MilkTea
-SHOP_PHONE=0901234567
-SHOP_ADDRESS=123 Nguyễn Văn Cừ, Phường An Khánh, Ninh Kiều, Cần Thơ
+
+GHN_API_URL=https://dev-online-gateway.ghn.vn/shiip/public-api
+GHN_TOKEN=a372819c-93c8-11f1-a973-aee5264794df
+GHN_SHOP_ID=2521829
+GHN_SHOP_DISTRICT_ID=1442
+GHN_SHOP_WARD_CODE=21211
+
+
 
 # Cấu hình Google Maps API
 GOOGLE_MAPS_API_KEY=nhap_api_key_cua_ban_vao_day
-
-# Tọa độ mặc định của cửa hàng (Dùng chung cho cả Map và Ahamove)
-SHOP_LAT=10.0299337
-SHOP_LNG=105.7706153
