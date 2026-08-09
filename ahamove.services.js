@@ -1,59 +1,78 @@
-import { ahamoveIntegration } from '../integrations/ahamove.integrations.js';
-import prisma from '../config/prisma.js';
+import axios from 'axios';
 
-const SHOP_INFO = {
-  name: process.env.SHOP_NAME || 'Cửa hàng Trà Sữa MilkTea',
-  mobile: process.env.SHOP_PHONE || '0901234567',
-  address: process.env.SHOP_ADDRESS || 'Cần Thơ',
-  lat: parseFloat(process.env.SHOP_LAT || '10.0299337'),
-  lng: parseFloat(process.env.SHOP_LNG || '105.7706153')
+const GHN_API_URL = process.env.GHN_API_URL;
+const GHN_TOKEN = process.env.GHN_TOKEN;
+const GHN_SHOP_ID = Number(process.env.GHN_SHOP_ID);
+const GHN_SHOP_DISTRICT_ID = Number(process.env.GHN_SHOP_DISTRICT_ID) || 1442; // Mặc định Quận 1 nếu quên nhập env
+
+const ghnClient = axios.create({
+  baseURL: GHN_API_URL,
+  headers: {
+    'Content-Type': 'application/json',
+    'Token': GHN_TOKEN,
+    'ShopId': GHN_SHOP_ID
+  }
+});
+
+export const calculateFeeService = async ({
+  toDistrictId,
+  toWardCode,
+  weight = 500,
+  serviceTypeId = 2
+}) => {
+  const response = await ghnClient.post('/v2/shipping-order/fee', {
+    service_type_id: serviceTypeId,
+    insurance_value: 0,
+    coupon: null,
+    from_district_id: GHN_SHOP_DISTRICT_ID,
+    to_district_id: Number(toDistrictId),
+    to_ward_code: String(toWardCode),
+    height: 10,
+    length: 10,
+    weight: Number(weight),
+    width: 10
+  });
+
+  return response.data;
 };
 
-export const ahamoveService = {
-  estimateFee: async ({ customerName, customerPhone, customerAddress, customerLat, customerLng }) => {
-    const payload = {
-      order_time: 0,
-      service_id: "SGN-BIKE",
-      path: [
-        { lat: SHOP_INFO.lat, lng: SHOP_INFO.lng, address: SHOP_INFO.address, name: SHOP_INFO.name, mobile: SHOP_INFO.mobile },
-        { lat: customerLat, lng: customerLng, address: customerAddress, name: customerName, mobile: customerPhone }
-      ]
-    };
+/**
+ * Tạo đơn hàng vận chuyển trên hệ thống GHN
+ */
+export const createOrderService = async (orderData) => {
+  const response = await ghnClient.post('/v2/shipping-order/create', {
+    payment_type_id: orderData.paymentTypeId || 2, // 1: Người gửi trả, 2: Người nhận trả
+    note: orderData.note || "Giao hàng trà sữa",
+    required_note: "KHONGCHOXEMHANG",
+    return_phone: orderData.returnPhone,
+    return_address: orderData.returnAddress,
+    to_name: orderData.toName,
+    to_phone: orderData.toPhone,
+    to_address: orderData.toAddress,
+    to_ward_code: String(orderData.toWardCode),
+    to_district_id: Number(orderData.toDistrictId),
+    cod_amount: Number(orderData.codAmount || 0),
+    content: "Đơn hàng trà sữa",
+    weight: Number(orderData.weight || 500),
+    length: 10,
+    width: 10,
+    height: 10,
+    pick_station_id: null,
+    insurance_value: Number(orderData.insuranceValue || 0),
+    service_type_id: orderData.serviceTypeId || 2,
+    items: orderData.items || []
+  });
 
-    return await ahamoveIntegration.estimateOrder(payload);
-  },
+  return response.data;
+};
 
-  createAhamoveOrder: async ({ maDh, customerName, customerPhone, customerAddress, customerLat, customerLng, items }) => {
-    const payload = {
-      order_time: 0,
-      service_id: "SGN-BIKE",
-      payment_method: "CASH",
-      path: [
-        { lat: SHOP_INFO.lat, lng: SHOP_INFO.lng, address: SHOP_INFO.address, name: SHOP_INFO.name, mobile: SHOP_INFO.mobile, remarks: "Lấy đơn tại quán" },
-        { lat: customerLat, lng: customerLng, address: customerAddress, name: customerName, mobile: customerPhone, tracking_number: maDh, remarks: "Giao đồ uống cho khách" }
-      ],
-      items: items.map(item => ({
-        _id: item.MA_SP,
-        name: item.TEN_SP || "Đồ uống",
-        num: item.SOLUONG,
-        price: Number(item.THANHTIEN)
-      }))
-    };
+/**
+ * Hủy đơn hàng giao vận GHN
+ */
+export const cancelOrderService = async (orderCodes) => {
+  const response = await ghnClient.post('/v2/shipping-order/cancel', {
+    order_codes: Array.isArray(orderCodes) ? orderCodes : [orderCodes]
+  });
 
-    const orderData = await ahamoveIntegration.createOrder(payload);
-    const trackingNumber = orderData.order_id || orderData._id;
-    const totalFee = orderData.total_pay || orderData.total_fee || 0;
-
-    // Cập nhật database DON_HANG[cite: 19]
-    await prisma.dON_HANG.update({
-      where: { MA_DH: maDh },
-      data: {
-        MA_VAN_DON: trackingNumber,
-        PHI_SHIP: totalFee,
-        TRANG_THAI: 'CHO_LAY_HANG'
-      }
-    });
-
-    return orderData;
-  }
+  return response.data;
 };
