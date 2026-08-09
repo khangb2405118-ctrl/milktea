@@ -1,13 +1,17 @@
 import express from 'express';
-import { ahamoveController } from '../controllers/ahamove.controller.js';
-import { authenticate } from '../middlewares/auth.middleware.js';
+import { calculateFee, createShippingOrder, ghnWebhook } from '../controllers/ghn.controller.js';
+import { authenticate } from '../middlewares/auth.middleware.js'; //[cite: 5]
+import { authorize } from '../middlewares/authorize.middleware.js';    //[cite: 6]
 
 const router = express.Router();
 
-// Endpoint: POST /api/ahamove/estimate
-router.post('/estimate', authenticate, ahamoveController.estimateShippingFee);
+// Route công khai hoặc người dùng đã đăng nhập để tính phí
+router.post('/calculate-fee', authenticate, calculateFee);
 
-// Endpoint: POST /api/ahamove/create-order
-router.post('/create-order', authenticate, ahamoveController.createOrderToAhamove);
+// Route dành cho Admin/Nhân viên tạo vận đơn[cite: 6]
+router.post('/create-order', authenticate, authorize('ADMIN', 'NHAN_VIEN'), createShippingOrder);
+
+// Webhook endpoint (GHN sẽ gọi tới)
+router.post('/webhook', ghnWebhook);
 
 export default router;
